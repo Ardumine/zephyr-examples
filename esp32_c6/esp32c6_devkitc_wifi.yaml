@@ -1,0 +1,30 @@
+esphome:
+  name: esp32c6-wifi-example
+
+zephyr:
+  variant: ESP32C6
+  snippets:
+    - espressif-flash-4M
+
+logger:
+  hardware_uart: UART0 # using uart to usb bridge
+
+network:
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+api:
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+sensor:
+  - platform: uptime
+    name: "Uptime"
+    update_interval: 60s
+  - platform: internal_temperature
+    name: "Internal Temperature"
+    update_interval: 60s

@@ -1,0 +1,30 @@
+esphome:
+  name: nrf52-openthread-example
+
+zephyr:
+  variant: nrf52
+
+logger:
+
+network:
+
+openthread:
+  device_type: mtd
+  force_dataset: true
+  tlv: !secret openthread_tlv_wed
+
+api:
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+sensor:
+  - platform: uptime
+    name: "Uptime"
+    id: uptime_sensor_id
+    type: seconds
+    update_interval: 60s
+  - platform: internal_temperature
+    name: "Internal Temperature"
+    update_interval: 60s

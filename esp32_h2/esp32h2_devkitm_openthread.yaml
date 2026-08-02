@@ -1,0 +1,28 @@
+esphome:
+  name: esp32h2-openthread-example
+
+zephyr:
+  variant: ESP32H2
+
+logger:
+
+network:
+
+openthread:
+  device_type: mtd
+  force_dataset: true
+  tlv: !secret openthread_tlv_wed
+
+api:
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+sensor:
+  - platform: uptime
+    name: "Uptime"
+    update_interval: 60s
+  - platform: internal_temperature
+    name: "Internal Temperature"
+    update_interval: 60s
