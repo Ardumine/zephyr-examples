@@ -3,11 +3,6 @@ esphome:
 
 zephyr:
   variant: nrf52
-  framework:
-    type: zigbee
-    source:
-      type: git
-      ref: main
   overlays:
     app: |
       /delete-node/ &slot0_partition;
