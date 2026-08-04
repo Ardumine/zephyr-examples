@@ -4,11 +4,6 @@ esphome:
 zephyr:
   variant: nrf52
   board: xiao_ble
-  framework:
-    type: zigbee
-    source:
-      type: git
-      ref: main
   log_level: INFO
   overlays:
     # xiao_ble's stock devicetree ships a UF2/SoftDevice-coexistence partition table
