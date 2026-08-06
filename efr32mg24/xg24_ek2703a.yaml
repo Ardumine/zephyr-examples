@@ -1,0 +1,69 @@
+esphome:
+  name: xg24-ek2703a-example
+
+zephyr:
+  variant: efr32mg24
+
+logger:
+
+# No WiFi/Ethernet/OpenThread on this variant yet (no ieee802154 driver upstream for
+# Silicon Labs Series 2), so BLE is the only OTA transport available -- zephyr_mcumgr
+# is the one built for that, unlike the network-only ota: platform: esphome used by
+# the other examples in this repo.
+zephyr_ble_server:
+
+ota:
+  - platform: zephyr_mcumgr
+    transport:
+      ble: true
+
+output:
+  - platform: gpio
+    id: led0_output
+    pin: PA4  # LED0
+    inverted: true  # board wiring is GPIO_ACTIVE_LOW
+  - platform: gpio
+    id: led1_output
+    pin: PA7  # LED1
+    inverted: true  # active-low, same as LED0
+
+switch:
+  - platform: output
+    id: led0
+    name: "LED0"
+    output: led0_output
+  - platform: output
+    id: led1
+    name: "LED1"
+    output: led1_output
+
+binary_sensor:
+  - platform: gpio
+    id: button0
+    name: "Button 0"
+    pin:
+      number: PB2  # SW0
+      mode: INPUT_PULLUP
+      inverted: true
+    on_press:
+      - switch.turn_on: led1
+    on_release:
+      - switch.turn_off: led1
+  - platform: gpio
+    id: button1
+    name: "Button 1"
+    pin:
+      number: PB3  # SW1
+      mode: INPUT_PULLUP
+      inverted: true
+
+i2c:
+  # sda/scl intentionally omitted: resolved automatically from the board's fixed
+  # i2c0_default pinctrl node (SCL=PC4, SDA=PC5).
+
+sensor:
+  - platform: adc
+    id: mikrobus_adc
+    name: "mikroBUS ADC"
+    pin: PB0  # mikroBUS AN
+    update_interval: 60s
