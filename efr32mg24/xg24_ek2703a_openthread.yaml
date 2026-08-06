@@ -1,0 +1,45 @@
+esphome:
+  name: xg24-ek2703a-openthread-example
+
+zephyr:
+  variant: efr32mg24
+  framework:
+    source:
+      type: git
+      ref: main  # The ieee802154 driver for this SoC landed on Zephyr's main branch
+                 # 2026-02-12 (commit bd89985e6) -- not in any tagged release yet as
+                 # of v4.4.1, so it needs to be fetched from main directly for now.
+
+logger:
+
+network:
+  enable_ipv6: true
+
+openthread:
+  device_type: mtd
+  force_dataset: true
+  tlv: !secret openthread_tlv_wed
+
+api:
+
+output:
+  - platform: gpio
+    id: led0_output
+    pin: PA4  # LED0
+
+switch:
+  - platform: output
+    id: led0
+    name: "LED0"
+    output: led0_output
+
+binary_sensor:
+  - platform: gpio
+    id: btn0
+    name: "BTN0"
+    pin:
+      number: PB2  # SW0
+      mode: INPUT_PULLUP
+      inverted: true
+    on_press:
+      - switch.toggle: led0
