@@ -1,0 +1,14 @@
+esphome:
+  name: rp2040-zero-example
+
+zephyr:
+  variant: rp2040
+  board: rp2040_zero
+  log_level: INFO
+
+logger:
+
+sensor:
+  - platform: uptime
+    name: "Uptime"
+    update_interval: 60s
